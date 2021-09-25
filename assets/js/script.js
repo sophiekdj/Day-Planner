@@ -19,6 +19,7 @@ function displayTime() {
 }
 displayTime();
 
+// Save button saves text to local storage
 saveBtn.on("click", function (event) {
   event.preventDefault();
   var container = $(this).parent().parent();
@@ -35,8 +36,10 @@ saveBtn.on("click", function (event) {
   }
 });
 
+// When website is loaded, display saved information from previous session, called from local storage
 function init() {
   localStorage.getItem("planner-items");
+  // Do I have to use every time (only have 9 for now) in order to call the stored data?
   $("#9").textContent = "plannerContent";
 }
 init();
