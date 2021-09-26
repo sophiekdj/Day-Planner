@@ -1,7 +1,32 @@
-// variables
+// Document variables
 var timeblockEl = $("#container");
 var dateDisplayEl = $("#currentDay");
 var saveBtn = $("button.saveBtn.rounded-right");
+
+// Time variables and corresponding ids
+var idsCollection = ["#9", "#10", "#11", "#12", "#1", "#2", "#3", "#4", "#5"];
+var timeSlotCollection = [
+  "09:00:00",
+  "10:00:00",
+  "11:00:00",
+  "12:00:00",
+  "13:00:00",
+  "14:00:00",
+  "15:00:00",
+  "16:00:00",
+  "17:00:00",
+];
+var shiftedTimeSlotCollection = [
+  "10:00:00",
+  "11:00:00",
+  "12:00:00",
+  "13:00:00",
+  "14:00:00",
+  "15:00:00",
+  "16:00:00",
+  "17:00:00",
+  "18:00:00",
+];
 
 // Timeblock text - corresponding variables
 var plannerContent = [];
@@ -18,6 +43,44 @@ function displayTime() {
   dateDisplayEl.text(rightNow);
 }
 displayTime();
+
+for (var i = 0; i < idsCollection.length; i++) {
+  var descriptionEl = $(idsCollection[i]);
+  var buttonEl = descriptionEl.parent().parent().find("button");
+
+  if (
+    moment().format("MMMM Do YYYY, HH:mm:ss") <
+    moment().format("MMMM Do YYYY") + ", " + timeSlotCollection[i]
+  ) {
+    descriptionEl.addClass("future");
+    plannerContent.forEach(function (item) {
+      if (idsCollection[i] === "#" + item["input-id"]) {
+        descriptionEl.val(item["input-value"]);
+      }
+    });
+  } else if (
+    moment().format("MMMM Do YYYY, HH:mm:ss") >=
+      moment().format("MMMM Do YYYY") + ", " + timeSlotCollection[i] &&
+    moment().format("MMMM Do YYYY, HH:mm:ss") <
+      moment().format("MMMM Do YYYY") + ", " + shiftedTimeSlotCollection[i]
+  ) {
+    descriptionEl.addClass("present");
+    $(".present").attr("disabled", "disabled");
+    buttonEl.attr("disabled", true);
+    plannerContent.forEach(function (item) {
+      if (idsCollection[i] === "#" + item["input-id"]) {
+        descriptionEl.val(item["input-value"]);
+      }
+    });
+  } else if (
+    moment().format("MMMM Do YYYY, HH:mm:ss") >
+    moment().format("MMMM Do YYYY") + ", " + timeSlotCollection[i]
+  ) {
+    descriptionEl.addClass("past");
+    $(".past").attr("disabled", "disabled");
+    buttonEl.attr("disabled", true);
+  }
+}
 
 // Save button saves text to local storage
 saveBtn.on("click", function (event) {
@@ -37,9 +100,9 @@ saveBtn.on("click", function (event) {
 });
 
 // When website is loaded, display saved information from previous session, called from local storage
-function init() {
-  localStorage.getItem("planner-items");
-  // Do I have to use every time (only have 9 for now) in order to call the stored data?
-  $("#9").textContent = "plannerContent";
-}
-init();
+//function init() {
+//localStorage.getItem("planner-items");
+// Do I have to use every time (only have 9 for now) in order to call the stored data?
+//$("#9").textContent = "plannerContent";
+//}
+//init();
