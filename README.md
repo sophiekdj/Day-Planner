@@ -16,4 +16,4 @@ The page looks like this:
 
 ![alt text](assets/images/window.png)
 
-When the blue save button on the right is pressed, it saves the entered text into the local storage. This means the information is unaltered when the page is reloaded.
+When the blue save button on the right is pressed, it saves the entered text into the local storage. This means the text is unaltered when the page is reloaded.
