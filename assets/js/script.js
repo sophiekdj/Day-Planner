@@ -44,10 +44,12 @@ function displayTime() {
 }
 displayTime();
 
+// Past, present or future
 for (var i = 0; i < idsCollection.length; i++) {
   var descriptionEl = $(idsCollection[i]);
   var buttonEl = descriptionEl.parent().parent().find("button");
 
+  // Future timeblock(s)
   if (
     moment().format("MMMM Do YYYY, HH:mm:ss") <
     moment().format("MMMM Do YYYY") + ", " + timeSlotCollection[i]
@@ -58,6 +60,7 @@ for (var i = 0; i < idsCollection.length; i++) {
         descriptionEl.val(item["input-value"]);
       }
     });
+    // Present timeblock - disable save button
   } else if (
     moment().format("MMMM Do YYYY, HH:mm:ss") >=
       moment().format("MMMM Do YYYY") + ", " + timeSlotCollection[i] &&
@@ -72,6 +75,7 @@ for (var i = 0; i < idsCollection.length; i++) {
         descriptionEl.val(item["input-value"]);
       }
     });
+    // Past timeblock
   } else if (
     moment().format("MMMM Do YYYY, HH:mm:ss") >
     moment().format("MMMM Do YYYY") + ", " + timeSlotCollection[i]
@@ -98,11 +102,3 @@ saveBtn.on("click", function (event) {
     localStorage.setItem("planner-items", JSON.stringify(plannerContent));
   }
 });
-
-// When website is loaded, display saved information from previous session, called from local storage
-//function init() {
-//localStorage.getItem("planner-items");
-// Do I have to use every time (only have 9 for now) in order to call the stored data?
-//$("#9").textContent = "plannerContent";
-//}
-//init();
